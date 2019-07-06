@@ -1,57 +1,38 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using AppCep.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using WebEndereco.Models;
-
-namespace WebEndereco.Controllers
+// Matheus Victor Cordeiro
+namespace AppCep.Controllers
 {
-    public class EnderecoController : Controller
+    public class CepController : Controller
     {
 
         private readonly Context _context;
 
-        public EnderecoController(Context context)
+        public CepController(Context context)
         {
             _context = context;
         }
+
         public IActionResult Index()
         {
-            return View();
+            return View(_context.Enderecos.ToList());
         }
-       
 
-        public IActionResult ConsultarEndereco()
+        public IActionResult BuscaCep()
         {
-
-
+            var cep = HttpContext.Request.Query["cep"].ToString();
             WebClient client = new WebClient();
-            string json = client.DownloadString("https://viacep.com.br/ws/01001000/json/");
+            string json = client.DownloadString("http://viacep.com.br/ws/" + cep + "/json/");
             Endereco endereco = JsonConvert.DeserializeObject<Endereco>(json);
-
-            return RedirectToAction("Index");
-        }
-
-
-        public IActionResult btnCadastrar(Endereco endereco)
-
-        {
             _context.Enderecos.Add(endereco);
             _context.SaveChanges();
             return RedirectToAction("Index");
-
-        }
-
-         
-        public IActionResult List()
-
-        {
-          
-            return View();
-
         }
 
     }
