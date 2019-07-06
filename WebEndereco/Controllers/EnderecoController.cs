@@ -22,7 +22,7 @@ namespace WebEndereco.Controllers
         {
             return View();
         }
-
+       
 
         public IActionResult ConsultarEndereco()
         {
@@ -49,8 +49,8 @@ namespace WebEndereco.Controllers
         public IActionResult List()
 
         {
-            List<Endereco> lista = new List<Endereco>();
-            return View("Index");
+          
+            return View();
 
         }
 
